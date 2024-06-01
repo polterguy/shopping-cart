@@ -25,6 +25,7 @@ execute:magic.workflows.actions.execute
          .:name
          .:description
          .:sku
+         .:image_url
       database:shopping-cart
       table:products
 
