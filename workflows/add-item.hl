@@ -31,7 +31,7 @@ execute:magic.workflows.actions.execute
    arguments
       columns
          .:product_id
-      database:shopping-cart
+      database:shopping-cart-demo
       table:products
       and
          sku:x:@.arguments/*/sku
@@ -47,7 +47,7 @@ execute:magic.workflows.actions.execute
    name:sql-create
    filename:/misc/workflows/actions/sql/sql-create.hl
    arguments
-      database:shopping-cart
+      database:shopping-cart-demo
       table:items
       values
          product_id:x:../*/execute/=sql-read-products/*/*/product_id

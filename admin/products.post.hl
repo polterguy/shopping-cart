@@ -1,5 +1,5 @@
 
-// Create endpoint inserting one record into your products table in your shopping-cart database taking name, description, sku, price, image_url with authentication and authorisation for root,admin roles
+// Create endpoint inserting one record into your products table in your shopping-cart-demo database taking name, description, sku, price, image_url with authentication and authorisation for root,admin roles
 .arguments
 
    // name column value
@@ -18,7 +18,7 @@
    image_url:string
 
 // Meta data description for endpoint
-.description:Create endpoint inserting one record into your products table in your shopping-cart database taking name, description, sku, price, image_url with authentication and authorisation for root,admin roles
+.description:Create endpoint inserting one record into your products table in your shopping-cart-demo database taking name, description, sku, price, image_url with authentication and authorisation for root,admin roles
 
 // Type of endpoint
 .type:crud-create
@@ -27,7 +27,7 @@
 auth.ticket.verify:root,admin
 
 // Opening up database connection.
-data.connect:[generic|shopping-cart]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
    // Parametrising our create invocation.

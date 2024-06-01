@@ -9,7 +9,7 @@
    session:string
 
 // Opening up database connection.
-data.connect:[generic|shopping-cart]
+data.connect:[generic|shopping-cart-demo]
 
    // Removing item.
    data.delete

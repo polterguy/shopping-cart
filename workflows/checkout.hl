@@ -1,0 +1,35 @@
+
+/*
+ * Checkout and pay
+ * 
+ * Allows the user to checkout and pay for the items he or she has in their shopping cart.
+ */
+.arguments
+   session:string
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart-demo]
+
+   // Selecting price and name of items in cart.
+   data.select:select p.name, p.price, p.sku, i.quantity from items i inner join products p on i.product_id = p.product_id where session_id = @session
+      @session:x:@.arguments/*/session
+
+   /*
+    * TODO: Here is where you would somehow invoke your actual backend shopping cart API to generate
+    * and actual payment link or something. We just log the entire cart to illustrate as an example.
+    */
+   lambda2hyper:x:@data.select/*
+   log.info:User checked out his items
+      items:x:@lambda2hyper
+
+   // Resetting shopping cart items.
+   data.delete
+      table:items
+      where
+         and
+            session_id.eq:x:@.arguments/*/session
+
+   // Returning success to caller to indicate process successfully completed.
+   return
+      result:success
+      message:Checkout was successful and your cart was reset. Your items will be shipped to your door and be available for you in 24 hours.

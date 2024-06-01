@@ -1,5 +1,5 @@
 
-// Read endpoint with paging, sorting on fully qualified table name (TABLE_NAME.COLUMN_NAME), filtering selecting records from your products table in your shopping-cart database returning product_id, name, description, sku, price, image_url filtering on product_id, name, description, sku, price, image_url with authentication and authorisation for root,admin roles
+// Read endpoint with paging, sorting on fully qualified table name (TABLE_NAME.COLUMN_NAME), filtering selecting records from your products table in your shopping-cart-demo database returning product_id, name, description, sku, price, image_url filtering on product_id, name, description, sku, price, image_url with authentication and authorisation for root,admin roles
 .arguments
 
    // Number of records to return
@@ -45,7 +45,7 @@
    products.image_url.eq:string
 
 // Meta data description for endpoint
-.description:Read endpoint with paging, sorting on fully qualified table name (TABLE_NAME.COLUMN_NAME), filtering selecting records from your products table in your shopping-cart database returning product_id, name, description, sku, price, image_url filtering on product_id, name, description, sku, price, image_url with authentication and authorisation for root,admin roles
+.description:Read endpoint with paging, sorting on fully qualified table name (TABLE_NAME.COLUMN_NAME), filtering selecting records from your products table in your shopping-cart-demo database returning product_id, name, description, sku, price, image_url filtering on product_id, name, description, sku, price, image_url with authentication and authorisation for root,admin roles
 
 // Type of endpoint
 .type:crud-read
@@ -54,7 +54,7 @@
 auth.ticket.verify:root,admin
 
 // Opening up our database connection.
-data.connect:[generic|shopping-cart]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
    // Parametrising our read invocation with ordering arguments if specified.

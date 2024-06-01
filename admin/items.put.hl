@@ -1,5 +1,5 @@
 
-// Update endpoint updating one record in your items table in your shopping-cart database filtering which item to update with item_id updating product_id, session_id fields with authentication and authorisation for root,admin roles
+// Update endpoint updating one record in your items table in your shopping-cart-demo database filtering which item to update with item_id updating product_id, session_id fields with authentication and authorisation for root,admin roles
 .arguments
 
    // item_id column value being primary key of record to update
@@ -12,7 +12,7 @@
    session_id:string
 
 // Meta data description for endpoint
-.description:Update endpoint updating one record in your items table in your shopping-cart database filtering which item to update with item_id updating product_id, session_id fields with authentication and authorisation for root,admin roles
+.description:Update endpoint updating one record in your items table in your shopping-cart-demo database filtering which item to update with item_id updating product_id, session_id fields with authentication and authorisation for root,admin roles
 
 // Type of endpoint
 .type:crud-update
@@ -31,7 +31,7 @@ auth.ticket.verify:root,admin
       long:bool:true
 
 // Opening up our database connection.
-data.connect:[generic|shopping-cart]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
    // Parametrising our invocation.

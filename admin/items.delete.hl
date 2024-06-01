@@ -1,12 +1,12 @@
 
-// Delete endpoint deleting one record from your items table in your shopping-cart database with item_id matching argument with authentication and authorisation for root,admin roles
+// Delete endpoint deleting one record from your items table in your shopping-cart-demo database with item_id matching argument with authentication and authorisation for root,admin roles
 .arguments
 
    // Primary key of record to delete
    item_id:long
 
 // Meta data description for endpoint
-.description:Delete endpoint deleting one record from your items table in your shopping-cart database with item_id matching argument with authentication and authorisation for root,admin roles
+.description:Delete endpoint deleting one record from your items table in your shopping-cart-demo database with item_id matching argument with authentication and authorisation for root,admin roles
 
 // Type of endpoint
 .type:crud-delete
@@ -18,7 +18,7 @@ auth.ticket.verify:root,admin
 validators.mandatory:x:@.arguments/*/item_id
 
 // Opening up our database connection.
-data.connect:[generic|shopping-cart]
+data.connect:[generic|shopping-cart-demo]
    database-type:sqlite
 
    // Parametrising our delete invocation.

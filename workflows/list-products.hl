@@ -26,7 +26,8 @@ execute:magic.workflows.actions.execute
          .:description
          .:sku
          .:image_url
-      database:shopping-cart
+         .:price
+      database:shopping-cart-demo
       table:products
 
 // Returns the result of your last action.

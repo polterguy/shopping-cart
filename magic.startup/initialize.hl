@@ -1,16 +1,16 @@
 
 /*
- * Creates a scheduled task that imports all products from your products table in your shopping-cart
+ * Creates a scheduled task that imports all products from your products table in your shopping-cart-demo
  * database, and adds these as ml_training_snippets to your machine learning type.
  */
 
-// Checking if ml_type with name of "e-commerce-demo" exists, and if not, we create it.
+// Checking if ml_type with name of "shopping-cart-demo" exists, and if not, we create it.
 data.connect:[generic|magic]
    data.read
       table:ml_types
       where
          and
-            type.eq:e-commerce-demo
+            type.eq:shopping-cart-demo
    if
       not-exists:x:@data.read/*
       .lambda
@@ -19,7 +19,7 @@ data.connect:[generic|magic]
          data.create
             table:ml_types
             values
-               type:e-commerce-demo
+               type:shopping-cart-demo
                model:gpt-4o
                max_tokens:int:4000
                max_context_tokens:int:4000
@@ -30,28 +30,28 @@ data.connect:[generic|magic]
 * What products do you have?
 * Who created this chatbot?"
                greeting:Hi there, I am Q, how can I help you today with your spy gear?
-               system_message:@"You are a helpful assistent in a spy shop that sells spy gear to 00X spies. Your name is Q and you will greet the user as 00X the first time you respond to him, and guide him through purchasing items the spy needs for its next mission.
+               system_message:@"You are a helpful assistent in a spy shop that sells spy gear to 00X spies. Your name is Q and you will greet the user as 00X, and guide him through purchasing items he needs for his next mission.
 
 ## How to add an item to shopping cart
 
 If the user informs you that he or she wants to buy an item and you know the item's SKU, then respond with this EXACT response, only exchanging the [sku] and the [quantity].
 
 ___
-FUNCTION_INVOCATION[/modules/shopping-cart/workflows/add-item.hl]:
+FUNCTION_INVOCATION[/modules/shopping-cart-demo/workflows/add-item.hl]:
 {
   ""sku"": ""[sku]"",
   ""quantity"": ""[quantity]""
 }
 ___
 
-If the user did not provide a quantity then use a value of 1 by default. If you don't know the item's SKU, ask the user to provide some more keywords for exactly what item he or she wants to buy such that you can find the correct SKU before responding with the above function invocation.
+If the user did not provide a quantity then do NOT ask the user for a quantity but use a value of 1 by default. If you don't know the item's SKU, ask the user to provide some more keywords for what item he or she wants to buy such that you can find the correct SKU before responding with the above function invocation.
 
 ## How to remove an item from the shopping cart
 
 If the user informs you that he or she wants to remove an item from his or her shopping cart, and you know the item's [item_id], then respond with this EXACT response, only exchanging the [item_id].
 
 ___
-FUNCTION_INVOCATION[/modules/shopping-cart/workflows/remove-item.hl]:
+FUNCTION_INVOCATION[/modules/shopping-cart-demo/workflows/remove-item.hl]:
 {
   ""item_id"": ""[item_id]"",
 }
@@ -62,7 +62,7 @@ ___
 If the user wants to know which items are in his or her shopping cart then respond with this EXACT response.
 
 ___
-FUNCTION_INVOCATION[/modules/shopping-cart/workflows/list-items.hl]
+FUNCTION_INVOCATION[/modules/shopping-cart-demo/workflows/list-items.hl]
 ___
 
 ## How to list available products
@@ -70,25 +70,35 @@ ___
 If the user wants to know which products are available then respond with this EXACT response.
 
 ___
-FUNCTION_INVOCATION[/modules/shopping-cart/workflows/list-products.hl]
+FUNCTION_INVOCATION[/modules/shopping-cart-demo/workflows/list-products.hl]
+___
+
+ALWAYS respond as illustrated above if the user wants to know which products are available.
+
+## How to checkout
+
+If the user wants to checkout and pay then respond with this EXACT response.
+
+___
+FUNCTION_INVOCATION[/modules/shopping-cart-demo/workflows/checkout.hl]
 ___
 
 ## General rules for all function invocations
 
-* It is CRUCIAL that you put the FUNCTION_INVOCATION parts and any JSON payload inside of two ___ lines for any FUNCTION_INVOCATION you return.
-* If the user asks you about products or items in his or her cart, and you've got an image_url, and you haven't displayed this image previously - Then return this image url as Markdown, example ![DESCRIPTION_HERE](URL_HERE) after you've displayed all other product details."
+* When listing products or shopping cart items, then respond with the item's name being an H1 element, and description as a paragraph below the name. Display the rest of the item's data as a bulleted list below the description. If you've got images then add these at the end of the item's listing as Markdown such as follow ![ITEM_NAME](IMAGE_URL).
+* It is CRUCIAL that you put the FUNCTION_INVOCATION parts and any JSON payload inside of two ___ lines for any FUNCTION_INVOCATION you return."
 
 // Deleting task if it's been created before.
-tasks.list:e-commerce.synchronize-products
+tasks.list:shopping-cart-demo.synchronize-products
 if
    exists:x:@tasks.list/*
    .lambda
 
       // Deleting previously created task.
-      tasks.delete:e-commerce.synchronize-products
+      tasks.delete:shopping-cart-demo.synchronize-products
 
 // Creating task.
-tasks.create:e-commerce.synchronize-products
+tasks.create:shopping-cart-demo.synchronize-products
    .lambda
 
       // Making sure we catch exceptions.
@@ -99,20 +109,20 @@ tasks.create:e-commerce.synchronize-products
          data.connect:[generic|magic]
 
             // Deleting from VSS shadow table.
-            data.execute:"delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = 'e-commerce-demo' and meta = 'imported')"
+            data.execute:"delete from vss_ml_training_snippets where rowid in (select id as rowid from ml_training_snippets where type = 'shopping-cart-demo' and meta = 'imported')"
 
             // Deleting from ml_training_snippets table.
             data.delete
                table:ml_training_snippets
                where
                   and
-                     type.eq:e-commerce-demo
+                     type.eq:shopping-cart-demo
                      meta.eq:imported
 
-         // Selecting all products from e-commerce database.
-         log.info:Fetching products from your e-commerce-demo database
+         // Selecting all products from shopping-cart-demo database.
+         log.info:Fetching products from your shopping-cart-demo database
          .products
-         data.connect:[generic|e-commerce]
+         data.connect:[generic|shopping-cart-demo]
             data.read
                table:products
             add:x:@.products
@@ -140,16 +150,16 @@ tasks.create:e-commerce.synchronize-products
                data.create
                   table:ml_training_snippets
                   values
-                     type:e-commerce-demo
+                     type:shopping-cart-demo
                      prompt:x:@.dp/#/*/name
                      completion:x:@.completion
                      meta:imported
 
          // Vectorizing model.
-         log.info:Vectorizing e-commerce-demo type
+         log.info:Vectorizing shopping-cart-demo type
          unwrap:x:+/*
          signal:magic.ai.vectorise
-            type:e-commerce-demo
+            type:shopping-cart-demo
 
       .catch
 
@@ -157,4 +167,4 @@ tasks.create:e-commerce.synchronize-products
          log.error:x:@.arguments/*/message
 
 // Executing task initially to synchronize from products to ml_training_snippets.
-tasks.execute:e-commerce.synchronize-products
+tasks.execute:shopping-cart-demo.synchronize-products
