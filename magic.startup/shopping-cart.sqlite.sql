@@ -10,6 +10,14 @@ CREATE TABLE products(
   image_url text
 );
 
+/*
+ * Inserting some default products to have some examples of products.
+ */
+insert into products(name, description, sku, price, image_url) values('XR-17 Flying Car', 'A futuristic flying car, capable of vertically taking off and landing, allowing you to fly anywhere', 'SKU1234567890', 500000, 'https://ainiro.io/assets/images/misc/flying-car.jpg');
+insert into products(name, description, sku, price, image_url) values('KJ-91 X-Ray Sunglasses', 'Sunglasses allowing you to see through clothing and fabric, rendering everything visible', 'SKU0987654321', 250000, 'https://ainiro.io/assets/images/misc/x-ray-glasses.jpg');
+insert into products(name, description, sku, price, image_url) values('OP-11 AquaJet Submarine', 'A personal submarine with stealth capabilities and underwater exploration tools', 'SKU0987654322', 750000, 'https://ainiro.io/assets/images/misc/aqua-jet.jpg');
+insert into products(name, description, sku, price, image_url) values('RX-42 Quantum Disruptor Ray Gun', 'A high-tech ray gun with adjustable settings for various effects', 'SKU3987654322', 12500, 'https://ainiro.io/assets/images/misc/quantum-gun.jpg');
+
 CREATE TABLE items(
   item_id integer not null primary key autoincrement,
   product_id INTEGER not null references products(product_id),
