@@ -1,0 +1,29 @@
+
+// Adds an item to your shopping cart.
+.arguments
+   product_id:int
+   quantity:int
+   session_id:string
+.description:Adds an item to your shopping cart
+.type:public
+
+/*
+ * Invokes the SQL CRUD Create slot with the specified parameters.
+ *
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and [values] for your actual values
+ * to insert.
+ */
+execute:magic.workflows.actions.execute
+   name:sql-create
+   filename:/misc/workflows/actions/sql/sql-create.hl
+   arguments
+      database:shopping-cart
+      table:items
+      values
+         product_id:x:@.arguments/*/product_id
+         quantity:x:@.arguments/*/quantity
+         session_id:x:@.arguments/*/session_id
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

@@ -1,0 +1,51 @@
+
+// Create endpoint inserting one record into your items table in your shopping-cart database taking product_id, quantity, session_id with authentication and authorisation for root,admin roles
+.arguments
+
+   // product_id column value
+   product_id:long
+
+   // quantity column value
+   quantity:long
+
+   // session_id column value
+   session_id:string
+
+// Meta data description for endpoint
+.description:Create endpoint inserting one record into your items table in your shopping-cart database taking product_id, quantity, session_id with authentication and authorisation for root,admin roles
+
+// Type of endpoint
+.type:crud-create
+
+// Verifying user is authorized to access endpoint.
+auth.ticket.verify:root,admin
+.foreign-keys
+   .
+      column:product_id
+      table:products
+      foreign_column:product_id
+      foreign_name:name
+      long:bool:true
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart]
+   database-type:sqlite
+
+   // Parametrising our create invocation.
+   add:x:./*/data.create/*/values
+      get-nodes:x:@.arguments/*
+
+   // Creating our record.
+   data.create
+      database-type:sqlite
+      table:items
+      return-id:bool:true
+      values
+
+   // Returning the correct status code.
+   response.status.set:201
+
+   // Returning result of above invocation to caller.
+   unwrap:x:+/*
+   return
+      id:x:@data.create
