@@ -2,7 +2,7 @@
 /*
  * Adds an item to your shopping cart
  *
- * [product_id] is mandatory and has to be an actual product_id from an existing product,
+ * [product_id] is mandatory and has to be an existing product_id from an item existing in your database,
  * and [quantity] will default to 1 if not specified.
  */
 .arguments
