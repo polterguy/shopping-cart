@@ -1,0 +1,32 @@
+
+/*
+ * Lists all available products
+ * 
+ * Returns all products that user can purchase in shop
+ */
+.arguments
+.description:Lists all available products
+.type:public
+
+/*
+ * Invokes the SQL CRUD Read slot with the specified parameters.
+ *
+ * Provide [connection-string], [database-type], [database], and [table] to inform the action of
+ * what database/table you want to execute your SQL towards, and add [and] or [or] arguments
+ * to filter your returns, in addition to [limit] and [offset] to apply paging. Use [order]
+ * and [direction] to sort either ascending or descending. Notice, you can only use one of [or]
+ * or [and], and not both.
+ */
+execute:magic.workflows.actions.execute
+   name:sql-read
+   filename:/misc/workflows/actions/sql/sql-read.hl
+   arguments
+      columns
+         .:name
+         .:description
+         .:sku
+      database:shopping-cart
+      table:products
+
+// Returns the result of your last action.
+return-nodes:x:@execute/*

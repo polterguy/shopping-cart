@@ -1,0 +1,24 @@
+
+/*
+ * Removes the specified [item_id] from your shopping cart
+ * 
+ * [item_id] is mandatory and a reference to a single item in your shopping cart.
+ */
+.arguments
+   item_id:int
+   session:string
+
+// Opening up database connection.
+data.connect:[generic|shopping-cart]
+
+   // Removing item.
+   data.delete
+      table:items
+      where
+         and
+            item_id.eq:x:@.arguments/*/item_id
+            session_id.eq:x:@.arguments/*/session
+
+// Returning success to caller.
+return
+   result:success
