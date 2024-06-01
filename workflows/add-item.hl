@@ -1,11 +1,20 @@
 
-// Adds an item to your shopping cart.
+/*
+ * Adds an item to your shopping cart
+ *
+ * [product_id] is mandatory and has to be an actual product_id from an existing product,
+ * and [quantity] will default to 1 if not specified.
+ */
 .arguments
    product_id:int
    quantity:int
    session_id:string
 .description:Adds an item to your shopping cart
 .type:public
+
+// Defaulting [quantity] to 1 if not specified.
+validators.default:x:@.arguments
+   quantity:int:1
 
 /*
  * Invokes the SQL CRUD Create slot with the specified parameters.
