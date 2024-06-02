@@ -1,30 +1,58 @@
-name: Release build deploying to production environment
+name: Publishing release
 on:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches: [ master ]
 jobs:
-  archive-deploy:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Remove files  
-        run: rm -rf .git && rm -rf .github && rm -rf .vscode && rm -rf .gitignore rm -rf .DS_Store
+      - uses: actions/checkout@v3
+      - name: Remove Git related files files  
+        run: rm -rf .git && rm -rf .github && rm -rf .vscode && rm -rf .gitignore
       - name: Archive
         if: success()
         uses: vimtor/action-zip@v1
         with:
           files: ./
-          dest: archive.zip
-      - name: Deploy
+          dest: ${{ github.event.repository.name }}.zip
+      - name: Publish
         if: success()
-        uses: fjogeleit/http-request-action@v1
+        uses: fjogeleit/http-request-action@v1.14.0
         with:
-          url: 'https://ainiro.io/magic/system/file-system/install-module'
+          url: 'https://ainiro.io/magic/system/file-system/file'
           method: 'PUT'
+          timeout: 50000
           customHeaders: '{
             "Content-Type": "multipart/form-data",
             "Authorization": "Bearer ${{ secrets.PROD_TOKEN }}"
             }'
-          files: '{"file": "/home/runner/work/shopping-cart-demo/shopping-cart-demo/archive.zip"}'
+          data: '{"folder": "/etc/bazar/"}'
+          files: '{"file": "./${{ github.event.repository.name }}.zip"}'
+      - name: Uploading description
+        if: success()
+        uses: fjogeleit/http-request-action@v1.14.0
+        with:
+          url: 'https://ainiro.io/magic/system/file-system/file'
+          method: 'PUT'
+          timeout: 50000
+          customHeaders: '{
+            "Content-Type": "multipart/form-data",
+            "Authorization": "Bearer ${{ secrets.PROD_TOKEN }}"
+            }'
+          data: '{"folder": "/etc/bazar/"}'
+          files: '{"file": "./README.md"}'
+      - name: Renaming description file
+        if: success()
+        uses: fjogeleit/http-request-action@v1.14.0
+        with:
+          url: 'https://ainiro.io/magic/system/file-system/rename'
+          method: 'POST'
+          timeout: 50000
+          customHeaders: '{
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${{ secrets.PROD_TOKEN }}"
+            }'
+          data: '{
+            "oldName": "/etc/bazar/README.md",
+            "newName": "${{ github.event.repository.name }}.md"
+            }'
