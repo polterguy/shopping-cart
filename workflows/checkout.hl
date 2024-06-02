@@ -8,6 +8,8 @@
    session:string
    name:string
    email:string
+.description:Performs the checkout process to checkout and pay for your items in your shopping cart
+.type:public
 
 // Opening up database connection.
 data.connect:[generic|shopping-cart-demo]

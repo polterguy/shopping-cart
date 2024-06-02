@@ -7,6 +7,8 @@
 .arguments
    item_id:int
    session:string
+.description:Removes one item from your shopping cart
+.type:public
 
 // Opening up database connection.
 data.connect:[generic|shopping-cart-demo]
