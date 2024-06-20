@@ -6,7 +6,7 @@
  */
 .arguments
    item_id:int
-   session:string
+   _session:string
 .description:Removes one item from your shopping cart
 .type:public
 
@@ -19,7 +19,7 @@ data.connect:[generic|shopping-cart-demo]
       where
          and
             item_id.eq:x:@.arguments/*/item_id
-            session_id.eq:x:@.arguments/*/session
+            session_id.eq:x:@.arguments/*/_session
 
 // Returning success to caller.
 return

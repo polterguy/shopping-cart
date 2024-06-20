@@ -1,7 +1,7 @@
 
 // Retrieves all shopping cart items for the current [session].
 .arguments
-   session:string
+   _session:string
 .description:Lists all item to your shopping cart
 .type:public
 
@@ -13,6 +13,6 @@ data.connect:[generic|shopping-cart-demo]
 select i.item_id, i.quantity, p.name, p.description, p.image_url, p.price
    from items i inner join products p on i.product_id = p.product_id
    where i.session_id = @session"
-      @session:x:@.arguments/*/session
+      @session:x:@.arguments/*/_session
    return:x:@data.select/*
    
